@@ -13,8 +13,8 @@ namespace ClaimReserving
 
             var config = new AppConfig
             {
-                InputFilePath = @"C:\\test\testData.txt",
-                OutputFilePath = @"C:\\test\resultData.txt"
+                InputFilePath = @".\Data.txt",
+                OutputFilePath = @".\Result.txt"
             };
 
             if (args.Length == 2 && !string.IsNullOrWhiteSpace(args[0]))

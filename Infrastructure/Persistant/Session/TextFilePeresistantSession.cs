@@ -11,11 +11,7 @@ namespace ClaimReserving.Infrastructure.Persistant.Session
         public TextFilePeresistantSession(string filePath)
         {
             this.FilePath = filePath;
-            if (!File.Exists(this.FilePath))
-            {
-                var connection = File.Create(this.FilePath);
-                connection.Close();
-            }
+            generateFileIfNotExist(this.FilePath);
         }
 
         public TextFilePeresistantSession(string filePath,bool deleteOriginal):this(filePath)
@@ -23,7 +19,9 @@ namespace ClaimReserving.Infrastructure.Persistant.Session
             if (deleteOriginal && File.Exists(this.FilePath))
             {
                 File.Delete(this.FilePath);
-            }      
+            }
+
+            generateFileIfNotExist(this.FilePath);
         }
 
 
@@ -70,6 +68,15 @@ namespace ClaimReserving.Infrastructure.Persistant.Session
             catch (Exception ex)
             {
                 throw;
+            }
+        }
+
+        private void generateFileIfNotExist(string path)
+        {
+            if (!File.Exists(this.FilePath))
+            {
+                var connection = File.Create(this.FilePath);
+                connection.Close();
             }
         }
     }

@@ -40,6 +40,8 @@ namespace ClaimReserving.Services
 
         public bool Save(IList<CumulativeClaimData> records)
         {
+            if (records == null || records.Count == 0) return true;
+
             var minOriginalYear = records.SelectMany(p => p.Data).Select(p => p.OriginalYear).Min();
             var maxDevYearNum= records.SelectMany(p => p.Data).Select(p => p.DevelopmentYearNumber).Max();
 
