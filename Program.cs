@@ -23,7 +23,7 @@ namespace ClaimReserving
             }
 
 
-            if (args.Length == 2!string.IsNullOrWhiteSpace(args[1]))
+            if (args.Length == 2&&!string.IsNullOrWhiteSpace(args[1]))
             {
                 config.OutputFilePath = args[1];
             }
