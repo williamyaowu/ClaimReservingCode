@@ -1,14 +1,12 @@
 ﻿using ClaimReserving.Models;
 using ClaimReserving.Repository;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClaimReserving.Services
 {
     public class CumlativeClaimService
+        : ICumlativeClaimService
     {
         private ICumlativeClaimDataRepository _cumlativeClaimDataRepository;
         private IGeneralInfoRepository _generalInfoRepository;

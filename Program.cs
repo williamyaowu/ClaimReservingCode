@@ -1,11 +1,8 @@
-﻿using ClaimReserving.Infrastructure.Persistant.Session;
-using ClaimReserving.Repository;
+﻿using Castle.MicroKernel.Lifestyle;
+using Castle.MicroKernel.Registration;
+using Castle.Windsor;
 using ClaimReserving.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClaimReserving
 {
@@ -13,23 +10,37 @@ namespace ClaimReserving
     {
         static void Main(string[] args)
         {
-            var paymentsession = new TextFilePeresistantSession(@"C:\\test\testData.txt");
-            var paymentRepo = new PaymentRepository(paymentsession);
 
-            var resultsession= new TextFilePeresistantSession(@"C:\\test\resultData.txt",true);
-            var cumRepo = new CumlativeClaimDataRepository(resultsession);
-            var generalRepo = new GeneralInfoRepository(resultsession);
+            var config = new AppConfig
+            {
+                InputFilePath = @"C:\\test\testData.txt",
+                OutputFilePath = @"C:\\test\resultData.txt"
+            };
 
-            var paymentService = new PaymentService(paymentRepo);
+            var container = new WindsorContainer();
 
-            var payments = paymentService.GetAllPayment();
+            container.Register(Component.For<AppConfig>().Instance(config).LifestyleSingleton());
+            container.Install(new ApplicationIocInstaller());
 
+            using (var scope= container.BeginScope())
+            {
+                var paymentService = container.Resolve<IPaymentService>();
+                var payments = paymentService.GetAllPayment();
+                var culService = container.Resolve<ICumlativeClaimService>();
+                var result = culService.CalculateCumlativeCalims(payments);
+                culService.Save(result);
+            }
 
-            var culService = new CumlativeClaimService(cumRepo, generalRepo);
-            var result = culService.CalculateCumlativeCalims(payments);
-            culService.Save(result);
+            Console.Read();
         }
 
      
+    }
+
+    public class AppConfig
+    {
+        public string InputFilePath;
+
+        public string OutputFilePath;
     }
 }
