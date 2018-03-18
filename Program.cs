@@ -17,13 +17,13 @@ namespace ClaimReserving
                 OutputFilePath = @"C:\\test\resultData.txt"
             };
 
-            if (!string.IsNullOrWhiteSpace(args[0]))
+            if (args.Length == 2 && !string.IsNullOrWhiteSpace(args[0]))
             {
                 config.InputFilePath = args[0];
             }
 
 
-            if (!string.IsNullOrWhiteSpace(args[1]))
+            if (args.Length == 2!string.IsNullOrWhiteSpace(args[1]))
             {
                 config.OutputFilePath = args[1];
             }
@@ -33,7 +33,7 @@ namespace ClaimReserving
             container.Register(Component.For<AppConfig>().Instance(config).LifestyleSingleton());
             container.Install(new ApplicationIocInstaller());
 
-            using (var scope= container.BeginScope())
+            using (var scope = container.BeginScope())
             {
                 var paymentService = container.Resolve<IPaymentService>();
                 var payments = paymentService.GetAllPayment();
@@ -43,7 +43,7 @@ namespace ClaimReserving
             }
         }
 
-     
+
     }
 
     public class AppConfig

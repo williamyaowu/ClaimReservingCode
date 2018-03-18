@@ -37,7 +37,7 @@ namespace ClaimReserving.Repository
         {
             var data = record.Data.OrderBy(p => p.OriginalYear).ThenBy(p => p.DevelopmentYearNumber).Select(p=>p.Amount);
 
-            return string.Format("{0}; {1}", record.Product, string.Join("; ", data));
+            return string.Format("{0}, {1}", record.Product, string.Join(", ", data));
         }
     }
 }
