@@ -17,6 +17,17 @@ namespace ClaimReserving
                 OutputFilePath = @"C:\\test\resultData.txt"
             };
 
+            if (!string.IsNullOrWhiteSpace(args[0]))
+            {
+                config.InputFilePath = args[0];
+            }
+
+
+            if (!string.IsNullOrWhiteSpace(args[1]))
+            {
+                config.OutputFilePath = args[1];
+            }
+
             var container = new WindsorContainer();
 
             container.Register(Component.For<AppConfig>().Instance(config).LifestyleSingleton());
@@ -30,8 +41,6 @@ namespace ClaimReserving
                 var result = culService.CalculateCumlativeCalims(payments);
                 culService.Save(result);
             }
-
-            Console.Read();
         }
 
      
